@@ -12,16 +12,22 @@ class MoviesController < ApplicationController
 
   def index
     #@all_ratings = ['G','PG','PG-13','R','NC-17'];
-    @all_ratings = ['G','PG','PG-13','R','NC-17'];
-    @selected = ['G','PG','PG-13','R','NC-17'];
+    #@selected = ['G','PG','PG-13','R','NC-17
     
-    #replace all with .where()
+    @all_ratings = Movie.ratings
+    @movies = Movie.all
+    @selected = @all_ratings
+    
+    if params[:ratings]
+        @selected = params[:ratings].keys
+        @movies = @movies.where(:rating => @selected)
+    end
+    
     if params[:title] == "sort"
-      @movies = Movie.where(ratings).order(:title => "ASC")
+        @movies = @movies.order(:title => "ASC")
     elsif params[:release_date] == "sort"
-      @movies = Movie.where(ratings).order(:release_date => "ASC")
+        @movies = @movies.order(:release_date => "ASC")
     else
-      @movies = Movie.all
     end
   end
 

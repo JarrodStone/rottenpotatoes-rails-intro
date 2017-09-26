@@ -3,8 +3,8 @@ class Movie < ActiveRecord::Base
     def sort
     end
     
-    def self.all_ratings
-        
+    def self.ratings
+        Movie.select(:rating).map(&:rating).uniq
     end
     
 end
