@@ -1,8 +1,6 @@
 class Movie < ActiveRecord::Base
     
-    def sort
-    end
-    
+    #method to pick out the unique ratings from the movies
     def self.ratings
         Movie.select(:rating).map(&:rating).uniq
     end

@@ -11,23 +11,29 @@ class MoviesController < ApplicationController
   end
 
   def index
-    #@all_ratings = ['G','PG','PG-13','R','NC-17'];
-    #@selected = ['G','PG','PG-13','R','NC-17
-    
-    @all_ratings = Movie.ratings
+    @all_ratings = Movie.ratings.sort!
     @movies = Movie.all
-    @selected = @all_ratings
     
     if params[:ratings]
-        @selected = params[:ratings].keys
-        @movies = @movies.where(:rating => @selected)
+      @selected = params[:ratings].keys
+      @movies = @movies.where(:rating => @selected)
+    else
+      #@checked.each { |key, val| val = 0}
+        #if everything unchecked
+      #@movies = @movies.where(:rating => @selected)
     end
     
+    # Here's the function for two arrays -> hash   (to_h)
+    #   [[:foo, :bar], [1, 2]].to_h
+    #    => {:foo => :bar, 1 => 2}
+    
+    
     if params[:title] == "sort"
-        @movies = @movies.order(:title => "ASC")
+        #@movies = @movies.order(:title => "ASC")
+        @movies = @movies.order(:title)
     elsif params[:release_date] == "sort"
-        @movies = @movies.order(:release_date => "ASC")
-    else
+        #@movies = @movies.order(:release_date => "ASC")
+        @movies = @movies.order(:release_date)
     end
   end
 
@@ -58,4 +64,5 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
 end

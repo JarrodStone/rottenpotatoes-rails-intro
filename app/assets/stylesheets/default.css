@@ -53,12 +53,13 @@ title {
   margin: 1em 0;
   padding: 4px;
 }
+#movies .hilite {
+  background-color: yellow;
+}
 form label {
   display: block;
   line-height: 25px;
   font-weight: bold;
   color: maroon;
 }
-#movies .hilite {
-  background-color: yellow;
-}
+
