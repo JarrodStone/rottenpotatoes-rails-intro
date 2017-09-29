@@ -6,7 +6,7 @@
   - @all_ratings.each do |rating|
     = rating
     -#= hidden_field_tag "ratings[#{rating}]", 0
-    = check_box_tag "ratings[#{rating}]", true, params[:ratings].include?(rating), :id => "ratings#{rating}"
+    = check_box_tag "ratings[#{rating}]", true, if params[:ratings]; params[:ratings].include?(rating) else true end, :id => "ratings#{rating}"
     
     -#= check_box_tag "ratings[#{rating}]", "checked[#{rating}]", :id => "ratings#{rating}"
     
@@ -18,7 +18,7 @@
       %th{:class =>("hilite" if  params[:title] == "sort")}=link_to "Movie Title", movies_path(:title=>"sort"),{:id=>"title_header"}
       -#%th{:class => hilite?(:title)}=link_to "Movie Title", movies_path({"sort"=>:title}),{:id=>"title_header"}
       %th Rating
-      %th{:class =>("hilite" if params[:release_date] == "sort")}=link_to "Release Date", movies_path(:release_date=>"sort"),{:id=>"release_date_header"}
+      %th=link_to "Release Date", movies_path(:release_date=>"sort"),{:id=>"release_date_header"}
       -#%th{:class=> hilite?(:release_date)}=link_to "Release Date", movies_path({"sort"=>:release_date}),{:id=>"release_date_header"}
       %th More Info
   %tbody

@@ -2,6 +2,9 @@ class MoviesController < ApplicationController
 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
+    if (params[:release_date] == "sort")
+      release_date_header.class = hilite;
+    end
   end
 
   def show
