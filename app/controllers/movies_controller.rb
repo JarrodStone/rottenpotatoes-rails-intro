@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
     if (params[:release_date] == "sort")
-      release_date_header.class = hilite;
+      release_date_header.class = "hilite"
     end
   end
 
@@ -17,26 +17,31 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.ratings.sort!
     @movies = Movie.all
     
-    if params[:ratings]
+    if ((params[:ratings] != session[:ratings]) && (params[:ratings] != nil))
       @selected = params[:ratings].keys
       @movies = @movies.where(:rating => @selected)
-    else
-      #@checked.each { |key, val| val = 0}
-        #if everything unchecked
-      #@movies = @movies.where(:rating => @selected)
+      session[:ratings] = params[:ratings]
+    elsif session[:ratings] != nil
+      @selected = session[:ratings].keys
+      @movies = @movies.where(:rating => @selected)
+      flash.keep
+      #redirect_to movies_path
     end
-    
-    # Here's the function for two arrays -> hash   (to_h)
-    #   [[:foo, :bar], [1, 2]].to_h
-    #    => {:foo => :bar, 1 => 2}
-    
-    
-    if params[:title] == "sort"
+   
+    if (params[:title] == "sort")
         #@movies = @movies.order(:title => "ASC")
         @movies = @movies.order(:title)
-    elsif params[:release_date] == "sort"
+        session[:title_or_release_date] = "title"
+    elsif (params[:release_date] == "sort")
         #@movies = @movies.order(:release_date => "ASC")
         @movies = @movies.order(:release_date)
+        session[:title_or_release_date] = "release_date"
+    elsif (session[:title_or_release_date] != nil)
+      if session[:title_or_release_date] == "title"
+        @movies = @movies.order(:title)
+      elsif session[:title_or_release_date] == "release_date"
+        @movies = @movies.order(:release_date)
+      end
     end
   end
 
